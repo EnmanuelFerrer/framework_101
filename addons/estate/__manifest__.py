@@ -6,8 +6,6 @@
     "contributor": [
         "https://github.com/EnmanuelFerrer",
     ],
-    # "website": "https://www.ricardoteran.net",
-    # "summary": "Fijar automáticamente el tipo de cambio oficial de Venezuela (tipo BCV).",
     "description": "Framework 101",
     "depends": ["base"],
     "data": [
