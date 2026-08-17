@@ -1,0 +1,43 @@
+services:
+  odoo:
+    container_name: framework_101
+    command: odoo --dev=all
+    
+    build:
+      context: .
+      dockerfile: odoo.Dockerfile
+    
+    depends_on:
+      - db
+    ports:
+      - "${ODOO_EXT_PORT}:8069"
+    volumes:
+      - odoo:/var/lib/odoo
+      - ./config:/etc/odoo:z
+      - ./addons:/mnt/custom-addons:z
+    # restart: unless-stopped
+  db:
+    container_name: framework_101_db
+    
+    build:
+      context: .
+      dockerfile: postgres.Dockerfile
+    
+    environment:
+      - POSTGRES_USER=odoo
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_DB=postgres
+    ports:
+      - "${POSTGRES_EXT_PORT}:5432"
+    volumes:
+        - db:/var/lib/postgresql/data
+        
+        - ./config/init-pgvector.sql:/docker-entrypoint-initdb.d/init-pgvector.sql
+        
+    # restart: unless-stopped
+
+
+volumes:
+  odoo:
+  db:
+
