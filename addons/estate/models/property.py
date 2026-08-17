@@ -12,7 +12,7 @@ class Property(models.Model):
     expected_price = fields.Float(string="Expected price", required=True)
     selling_price = fields.Float(string="Selling price")
     bedrooms = fields.Integer(string="Amount of bedroom")
-    living_area = fields.Integer(string="Cantidad de livings")
+    living_area = fields.Integer(string="Amount of livings")
     facades = fields.Integer(string="Amoount of facades")
     garage = fields.Boolean(string="Have garage?")
     garden = fields.Boolean(string="Have garden?")
