@@ -98,6 +98,8 @@ class Property(models.Model):
             ("east", "East"),
             ("west", "West"),
         ],
+        required=True,
+        copy=False
     )
 
     # -------------------------------------------------------------------------
@@ -131,5 +133,7 @@ class Property(models.Model):
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "cancelled"),
-        ]
+        ],
+        required=True,
+        default="new"
     )
