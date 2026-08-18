@@ -31,4 +31,4 @@ class Property(models.Model):
         ],
     )
 
-    active = fields.Boolean(default=False)
+    active = fields.Boolean("Active", default=True)
