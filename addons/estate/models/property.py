@@ -30,3 +30,5 @@ class Property(models.Model):
             ("West", "west"),
         ],
     )
+
+    active = fields.Boolean(default=False)
