@@ -99,7 +99,7 @@ class Property(models.Model):
             ("west", "West"),
         ],
         required=True,
-        copy=False
+        copy=False,
     )
 
     # -------------------------------------------------------------------------
@@ -152,15 +152,15 @@ class Property(models.Model):
     # - default='new': new properties always start in the 'new' stage.
     # -------------------------------------------------------------------------
     state = fields.Selection(
-        string='State',
+        string="State",
         selection=[
-            ('new', 'New'),
-            ('offer_received', 'Offer Received'),
-            ('offer_accepted', 'Offer Accepted'),
-            ('sold', 'Sold'),
-            ('canceled', 'Canceled'),
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("canceled", "Canceled"),
         ],
         required=True,
         copy=False,
-        default='new',
+        default="new",
     )
