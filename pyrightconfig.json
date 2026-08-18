@@ -1,0 +1,17 @@
+{
+    "include": [
+        "addons",
+        "/home/rtnet001/odoo19/odoo",
+        "/home/rtnet001/odoo19/odoo/addons"
+    ],
+    "extraPaths": [
+        "/home/rtnet001/odoo19",
+        "/home/rtnet001/odoo19/odoo/addons",
+        "addons"
+    ],
+    "pythonVersion": "3.12",
+    "typeCheckingMode": "off",
+    "reportMissingImports": false,
+    "reportMissingModuleSource": false,
+    "useLibraryCodeForTypes": true
+}
