@@ -93,10 +93,10 @@ class Property(models.Model):
     garden_orientation = fields.Selection(
         string="Cardinal orientation of the garden",
         selection=[
-            ("North", "north"),
-            ("South", "south"),
-            ("East", "east"),
-            ("West", "west"),
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
         ],
     )
 
