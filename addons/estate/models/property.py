@@ -123,3 +123,13 @@ class Property(models.Model):
     #   record rules.
     # -------------------------------------------------------------------------
     active = fields.Boolean("Active", default=True)
+
+    estate = fields.Selection(
+        selection=[
+            ("new", "New"),
+            ("offer", "Offer"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "cancelled"),
+        ]
+    )
