@@ -1,0 +1,27 @@
+{
+    "name": "Odoo 19 Dev",
+    "dockerComposeFile": "../docker-compose.yml",
+    "service": "odoo",
+    "workspaceFolder": "/mnt/custom-addons",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "charliermarsh.ruff",
+                "42Crunch.vscode-openapi"
+            ],
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/bin/python3",
+                "python.analysis.extraPaths": [
+                    "/usr/lib/python3/dist-packages",
+                    "/usr/lib/python3.12/dist-packages"
+                ],
+                "pylance.insundance.autoImportCompletions.enable": true
+            }
+        }
+    },
+    "postCreateCommand": "pip3 install odoo --break-system-packages || true",
+    "forwardPorts": [8069],
+    "remoteUser": "odoo"
+}
