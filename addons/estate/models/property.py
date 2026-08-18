@@ -74,14 +74,14 @@ class Property(models.Model):
     # Integer fields with default values.
     # The 'default' parameter can also be a static value (not a callable)
     # when the value does not depend on runtime context.
-    bedrooms = fields.Integer(string="Amount of bedrooms", default=2)
+    bedrooms = fields.Integer(string="Bedrooms", default=2)
 
-    living_area = fields.Integer(string="Amount of livings")
-    facades = fields.Integer(string="Amount of facades")
+    living_area = fields.Integer(string="Living Area")
+    facades = fields.Integer(string="Facades")
 
     # Boolean fields represent simple true/false toggles.
-    garage = fields.Boolean(string="Have garage?")
-    garden = fields.Boolean(string="Have garden?")
+    garage = fields.Boolean(string="Garage")
+    garden = fields.Boolean(string="Garden")
 
     # Garden-related fields (only relevant if garden=True).
     garden_area = fields.Integer(string="Garden area")
