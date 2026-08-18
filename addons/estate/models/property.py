@@ -7,10 +7,12 @@ class Property(models.Model):
 
     name = fields.Char(string="Name of the property", required=True)
     description = fields.Text(string="Property description")
-    postcode = fields.Char(string="Pastal code")
-    # TODO: Default availability date must be 3 months after current date
-    #  https://www.odoo.com/documentation/19.0/es_419/developer/tutorials/server_framework_101/05_firstui.html#fields-attributes-and-view
-    date_availability = fields.Date(string="Availability date", copy=False)
+    postcode = fields.Char(string="Postal code")
+    date_availability = fields.Date(
+        string="Availability date",
+        copy=False,
+        default=lambda self: fields.Date.add(fields.Date.today(), months=3),
+    )
     expected_price = fields.Float(string="Expected price", required=True)
     selling_price = fields.Float(string="Selling price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Amount of bedroom", default=2)
@@ -25,6 +27,6 @@ class Property(models.Model):
             ("North", "north"),
             ("South", "south"),
             ("East", "east"),
-            ("Weste", "west"),
+            ("West", "west"),
         ],
     )
