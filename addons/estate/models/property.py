@@ -45,9 +45,9 @@ class Property(models.Model):
     # - copy: if False, the field value is NOT copied when duplicating a record.
     # -------------------------------------------------------------------------
 
-    name = fields.Char(string="Name of the property", required=True)
-    description = fields.Text(string="Property description")
-    postcode = fields.Char(string="Postal code")
+    name = fields.Char(string="Title", required=True)
+    description = fields.Text(string="Description")
+    postcode = fields.Char(string="Postcode")
 
     # Date field with a callable default.
     # The 'default' parameter accepts a callable (function or lambda) that
@@ -59,39 +59,39 @@ class Property(models.Model):
     # 'fields.Date.add()' is a static helper method provided by Odoo to
     # perform date arithmetic using relativedelta under the hood.
     date_availability = fields.Date(
-        string="Availability date",
+        string="Available from",
         copy=False,
         default=lambda self: fields.Date.add(fields.Date.today(), months=3),
     )
 
-    expected_price = fields.Float(string="Expected price", required=True)
+    expected_price = fields.Float(string="Expected Price", required=True)
 
     # 'readonly=True' makes the field non-editable in the UI.
     # 'copy=False' ensures the selling price is not carried over
     # when duplicating a property record.
-    selling_price = fields.Float(string="Selling price", readonly=True, copy=False)
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
 
     # Integer fields with default values.
     # The 'default' parameter can also be a static value (not a callable)
     # when the value does not depend on runtime context.
     bedrooms = fields.Integer(string="Bedrooms", default=2)
 
-    living_area = fields.Integer(string="Living Area")
+    living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer(string="Facades")
 
     # Boolean fields represent simple true/false toggles.
-    garage = fields.Boolean(string="Garage")
-    garden = fields.Boolean(string="Garden")
+    garage = fields.Boolean(string="Has Garage")
+    garden = fields.Boolean(string="Has Garden")
 
     # Garden-related fields (only relevant if garden=True).
-    garden_area = fields.Integer(string="Garden area")
+    garden_area = fields.Integer(string="Garden Area (sqm)")
 
     # Selection fields present a dropdown of predefined options.
     # The 'selection' parameter is a list of tuples: (value, label).
     # - The first element is the value stored in the database.
     # - The second element is the label displayed in the UI.
     garden_orientation = fields.Selection(
-        string="Cardinal orientation of the garden",
+        string="Garden Orientation",
         selection=[
             ("north", "North"),
             ("south", "South"),
