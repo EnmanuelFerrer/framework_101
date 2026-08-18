@@ -126,14 +126,41 @@ class Property(models.Model):
     # -------------------------------------------------------------------------
     active = fields.Boolean("Active", default=True)
 
-    estate = fields.Selection(
+    # -------------------------------------------------------------------------
+    # Lifecycle Status (reserved field 'state')
+    # -------------------------------------------------------------------------
+    # 'state' is a reserved field name in Odoo used to define the
+    # lifecycle stages of a record. It is implemented as a Selection
+    # field whose possible values represent where the property is in
+    # its selling workflow.
+    #
+    # The workflow transitions are:
+    #   new            -> Offer Received -> Offer Accepted -> Sold
+    #                                            \-> Canceled
+    #
+    # - 'new': the property has just been created, no offers yet.
+    # - 'offer_received': at least one offer has been received.
+    # - 'offer_accepted': an offer has been accepted by the seller.
+    # - 'sold': the sale has been completed.
+    # - 'canceled': the sale process was aborted.
+    #
+    # Attributes used:
+    # - string: the label shown in the UI.
+    # - required: every property must always have a status.
+    # - copy=False: the status must NOT be duplicated when copying a
+    #   property; the new record starts fresh in its default stage.
+    # - default='new': new properties always start in the 'new' stage.
+    # -------------------------------------------------------------------------
+    state = fields.Selection(
+        string='State',
         selection=[
-            ("new", "New"),
-            ("offer", "Offer"),
-            ("offer_accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("cancelled", "cancelled"),
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('canceled', 'Canceled'),
         ],
         required=True,
-        default="new"
+        copy=False,
+        default='new',
     )
