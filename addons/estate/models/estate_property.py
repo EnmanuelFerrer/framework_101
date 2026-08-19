@@ -3,7 +3,7 @@
 # - models: provides the base classes for defining Odoo models.
 # - fields: provides all the field types available in Odoo (Char, Integer, etc.)
 # =============================================================================
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 # =============================================================================
@@ -170,3 +170,9 @@ class EstateProperty(models.Model):
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
+    total_area = fields.Float(compute="_total_area", default=0)
+
+    @api.depends("living_area", "garden_area")
+    def _total_area(self):
+        self.living_area + self.garden
