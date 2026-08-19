@@ -77,3 +77,5 @@ docs/_build/
 
 # OCA rules
 !static/lib/
+# Local AI runtime state
+.atl/

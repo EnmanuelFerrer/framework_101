@@ -22,7 +22,7 @@ framework_101/
 │   ├── security/
 │   │   └── ir.model.access.csv         # CRUD permissions
 │   └── data/
-│       └── res.country.state.csv       # Country states (NOT in manifest yet)
+│       └── res.country.state.csv       # Country states
 ├── config/odoo.conf         # Primary Odoo config (used by Docker)
 ├── docker-compose.yml       # Odoo + PostgreSQL services
 ├── odoo.Dockerfile          # Odoo 19 image with ruff
@@ -79,17 +79,6 @@ ruff format addons/
 
 ## Code Conventions
 
-### Python (Odoo 19 style)
-- Follow Odoo's ORM patterns: inherit from `models.Model`
-- Use `fields.*` for all field definitions
-- Always provide `string=` attribute on fields
-- Use callables for dynamic defaults: `default=lambda self: ...`
-- Use `fields.Date.add()` / `fields.Date.today()` for date arithmetic
-- Set `copy=False` on fields that should not be duplicated
-- Set `readonly=True` on computed/derived fields
-- Use reserved field names (`active`, `name`, `state`) for their built-in behaviors
-- Import only `fields` and `models` from `odoo` unless otherwise needed
-
 ### XML Views
 - Window actions define the model and view modes
 - Menu items reference actions via `action=` attribute
@@ -125,4 +114,3 @@ ruff format addons/
 - Basic tree + form views
 - Menu structure: Root > First Level > Properties
 - `active` field implemented for archive/unarchive functionality
-- `data/res.country.state.csv` exists but is NOT wired into `__manifest__.py`
