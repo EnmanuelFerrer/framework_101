@@ -21,8 +21,8 @@ from odoo import fields, models
 # The '_description' attribute provides a human-readable name for the
 # model, used in logs, warnings, and the Odoo backend interface.
 # =============================================================================
-class Property(models.Model):
-    _name = "property"
+class EstateProperty(models.Model):
+    _name = "estate_property"
     _description = "Property"
 
     # -------------------------------------------------------------------------
