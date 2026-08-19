@@ -15,15 +15,14 @@ from odoo import fields, models
 #
 # The '_name' attribute defines the model's technical name used in the
 # database and throughout the ORM. It must be unique and follow the
-# "module.model_name" convention (here we omit the module prefix for
-# simplicity).
+# "module.model_name" convention using dot notation (e.g., "estate.property").
 #
 # The '_description' attribute provides a human-readable name for the
 # model, used in logs, warnings, and the Odoo backend interface.
 # =============================================================================
 class EstateProperty(models.Model):
-    _name = "estate_property"
-    _description = "Property"
+    _name = "estate.property"
+    _description = "Real Estate Property"
 
     # -------------------------------------------------------------------------
     # Basic Fields
@@ -98,7 +97,6 @@ class EstateProperty(models.Model):
             ("east", "East"),
             ("west", "West"),
         ],
-        required=True,
         copy=False,
     )
 
