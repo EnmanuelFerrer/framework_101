@@ -30,9 +30,7 @@ class EstatePropertyOffer(models.Model):
     def _compute_date_deadline(self):
         for record in self:
             date_from = (
-                record.create_date.date()
-                if record.create_date
-                else fields.Date.today()
+                record.create_date.date() if record.create_date else fields.Date.today()
             )
             record.date_deadline = date_from + timedelta(days=record.validity)
 
@@ -44,3 +42,11 @@ class EstatePropertyOffer(models.Model):
             # Set validity if the user modifies the date_deadline.
             if record.date_deadline:
                 record.validity = (record.date_deadline - date_from).days
+
+    # set the offer status to Accepted, then set selling price
+    def action_accept_offer(self):
+
+        return True
+
+    def action_refuse_offer(self):
+        return True
