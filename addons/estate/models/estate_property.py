@@ -180,7 +180,7 @@ class EstateProperty(models.Model):
 
     best_offer = fields.Float(compute="_best_offer", default=0.0, readonly=True)
 
-    @api.depends("offer_ids")
+    @api.depends("offer_ids.price")
     def _best_offer(self):
         for record in self:
             record.best_offer = max(record.offer_ids.mapped("price"), default=0.0)
