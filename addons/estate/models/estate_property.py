@@ -75,7 +75,7 @@ class EstateProperty(models.Model):
     # when the value does not depend on runtime context.
     bedrooms = fields.Integer(string="Bedrooms", default=2)
 
-    living_area = fields.Integer(string="Living Area (sqm)")
+    living_area = fields.Integer(string="Living Area (sqm)", default=0)
     facades = fields.Integer(string="Facades")
 
     # Boolean fields represent simple true/false toggles.
@@ -83,7 +83,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string="Has Garden")
 
     # Garden-related fields (only relevant if garden=True).
-    garden_area = fields.Integer(string="Garden Area (sqm)")
+    garden_area = fields.Integer(string="Garden Area (sqm)", default=0)
 
     # Selection fields present a dropdown of predefined options.
     # The 'selection' parameter is a list of tuples: (value, label).
@@ -171,8 +171,9 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
-    total_area = fields.Float(compute="_total_area", default=0)
+    total_area = fields.Float(compute="_total_area", default=0.0)
 
     @api.depends("living_area", "garden_area")
     def _total_area(self):
-        self.living_area + self.garden
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
