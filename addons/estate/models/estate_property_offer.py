@@ -45,8 +45,11 @@ class EstatePropertyOffer(models.Model):
 
     # set the offer status to Accepted, then set selling price
     def action_accept_offer(self):
-
+        for record in self:
+            record.status = "accepted"
         return True
 
     def action_refuse_offer(self):
+        for record in self:
+            record.status = "refused"
         return True

@@ -205,3 +205,7 @@ class EstateProperty(models.Model):
             raise exceptions.UserError("Sold properties can not be cancelled.")
         self.state = "cancelled"
         return True
+
+    @api.onchange("offer_ids.status")
+    def _onchange_offer_status(self):
+        
