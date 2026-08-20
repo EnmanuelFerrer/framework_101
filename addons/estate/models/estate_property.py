@@ -3,7 +3,7 @@
 # - models: provides the base classes for defining Odoo models.
 # - fields: provides all the field types available in Odoo (Char, Integer, etc.)
 # =============================================================================
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 # =============================================================================
@@ -156,7 +156,7 @@ class EstateProperty(models.Model):
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("canceled", "Canceled"),
+            ("cancelled", "Cancelled"),
         ],
         required=True,
         copy=False,
@@ -193,3 +193,15 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_set_state_sold(self):
+        if self.state == "cancelled":
+            raise exceptions.UserError("Cancelled properties can not be sold.")
+        self.state = "sold"
+        return True
+
+    def action_set_state_cancelled(self):
+        if self.state == "sold":
+            raise exceptions.UserError("Sold properties can not be cancelled.")
+        self.state = "cancelled"
+        return True
