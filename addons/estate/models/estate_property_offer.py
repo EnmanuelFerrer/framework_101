@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -44,12 +45,40 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - date_from).days
 
     # set the offer status to Accepted, then set selling price
-    def action_accept_offer(self):
-        for record in self:
-            record.status = "accepted"
-        return True
+    def action_set_status_accepted(self):
+        for offer in self:
+            if (
+                offer.property_id.state == "cancelled"
+                or offer.property_id.state == "sold"
+            ):
+                raise UserError("Cancelled or sold properties cannot accept offers.")
 
-    def action_refuse_offer(self):
-        for record in self:
-            record.status = "refused"
-        return True
+            if offer.status == "refused":
+                raise UserError("Refused offers cannot be accepted.")
+            
+            accepted_offers = offer.property_id.offer_ids.filtered(
+                lambda o: o.status == "accepted" 
+            )
+            if accepted_offers:
+                raise UserError("Only one offer can be accepted.")
+
+            offer.status = "accepted"
+
+            offer.property_id.write(
+                {
+                    "buyer_id": offer.buyer_id.id,
+                    "selling_price": offer.price,
+                    "state": "offer_accepted",
+                }
+            )
+
+            offer.property_id.buyer_id = offer.buyer_id
+            offer.property_id.selling_price = offer.price
+            offer.property_id.state = "offer_accepted"
+
+    def action_set_status_refused(self):
+        for offer in self:
+            if offer.status == "accepted":
+                raise UserError("Accepted offers cannot be cancelled.")
+
+            offer.status = "refused"
