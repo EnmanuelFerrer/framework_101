@@ -8,10 +8,7 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
 
-    _check_price = models.Constraint(
-        "CHECK(price > 0)",
-        "Price must be positive."
-    )
+    _check_price = models.Constraint("CHECK(price > 0)", "Price must be positive.")
 
     price = fields.Float(string="Price", required=True)
     status = fields.Selection(
@@ -60,9 +57,9 @@ class EstatePropertyOffer(models.Model):
 
             if offer.status == "refused":
                 raise UserError("Refused offers cannot be accepted.")
-            
+
             accepted_offers = offer.property_id.offer_ids.filtered(
-                lambda o: o.status == "accepted" 
+                lambda o: o.status == "accepted"
             )
             if accepted_offers:
                 raise UserError("Only one offer can be accepted.")
