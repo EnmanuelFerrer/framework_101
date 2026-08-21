@@ -1,5 +1,61 @@
 # Odoo 19 Estate Module - Development Context
 
+## MAXIMUM PRIORITY CONTEXT — READ FIRST
+
+These instructions override any other source of context for this repository.
+
+- **Framework:** Odoo 19.0 — all code must use Odoo 19 API patterns.
+- **Tutorial:** Server Framework 101 (official Odoo 19 documentation).
+- Implement features following the current tutorial chapter; when in doubt,
+  consult the official Odoo 19 documentation before writing code.
+- Do not use patterns from older Odoo versions (< 18) even if found on the web.
+
+### Odoo 19 mandatory patterns
+
+- SQL constraints via `models.Constraint(...)` attribute (NOT `_sql_constraints`).
+- Views use the `<list>` tag (`<tree>` is removed in v19).
+- Use `self.env.cr`, `self.env.context`, `self.env.uid` (`record._cr`,
+  `record._context`, `record._uid` are deprecated).
+- Floats: always compare with `float_compare()` / `float_is_zero()` from
+  `odoo.tools.float_utils`; never compare floats with `==`, `<`, `>` directly.
+- `create()` overrides require the `@api.model_create_multi` decorator.
+- `odoo.osv` is deprecated; use ORM methods or `odoo.tools.SQL`.
+
+### Official references
+
+- ORM API: https://www.odoo.com/documentation/19.0/developer/reference/backend/orm.html
+- Tutorial index: https://www.odoo.com/documentation/19.0/developer/tutorials/server_framework_101.html
+- ORM changelog: https://www.odoo.com/documentation/19.0/developer/reference/backend/orm/changelog.html
+
+## Tutorial Progress (Server Framework 101)
+
+- [x] Chapter 1: Architecture Overview
+- [x] Chapter 2: A New Application
+- [x] Chapter 3: Models And Basic Fields
+- [x] Chapter 4: Security - A Brief Introduction
+- [x] Chapter 5: Finally, Some UI To Play With
+- [x] Chapter 6: Basic Views
+- [x] Chapter 7: Relations Between Models
+- [x] Chapter 8: Computed Fields And Onchanges
+- [x] Chapter 9: Ready For Some Action?
+- [ ] **Chapter 10: Constraints — IN PROGRESS**
+  - SQL constraints done (expected/selling/offer price > 0, unique type/tag names).
+  - Pending: Python constraint — selling price cannot be lower than 90% of the
+    expected price. Requirements:
+    - `@api.constrains('selling_price', 'expected_price')`
+    - Skip check when selling price is zero (no accepted offer yet) using
+      `float_is_zero()`.
+    - Compare margin with `float_compare()`.
+    - Raise `ValidationError` from `odoo.exceptions`.
+- [ ] Chapter 11: Add The Sprinkles
+- [ ] Chapter 12: Inheritance
+- [ ] Chapter 13: Interact With Other Modules
+- [ ] Chapter 14: A Brief History Of QWeb
+- [ ] Chapter 15: The final word
+
+When a chapter is completed, mark its checkbox and move the IN PROGRESS marker
+to the next chapter before starting new work.
+
 ## Project Overview
 
 Dockerized Odoo 19 development environment for learning the Server Framework 101 tutorial. Contains a single custom addon (`estate`) for real estate property management.
@@ -15,22 +71,27 @@ framework_101/
 │   ├── __init__.py          # Root package init
 │   ├── models/
 │   │   ├── __init__.py
-│   │   └── property.py      # Main property model
+│   │   ├── estate_property.py         # estate.property model
+│   │   ├── estate_property_type.py    # estate.property.type model
+│   │   ├── estate_property_tag.py     # estate.property.tag model
+│   │   └── estate_property_offer.py   # estate.property.offer model
 │   ├── views/
-│   │   ├── estate_property_views.xml   # Tree + Form views
-│   │   └── estate_menus.xml            # Menu hierarchy
+│   │   ├── estate_property_views.xml        # List + form + search views
+│   │   ├── estate_property_type_views.xml   # Type CRUD views
+│   │   ├── estate_property_tag_views.xml    # Tag CRUD views
+│   │   └── estate_property_menus.xml        # Menu hierarchy
 │   ├── security/
-│   │   └── ir.model.access.csv         # CRUD permissions
+│   │   └── ir.model.access.csv        # CRUD permissions (4 models)
 │   └── data/
-│       └── res.country.state.csv       # Country states
-├── config/odoo.conf         # Primary Odoo config (used by Docker)
-├── docker-compose.yml       # Odoo + PostgreSQL services
-├── odoo.Dockerfile          # Odoo 19 image with ruff
-├── postgres.Dockerfile      # PostgreSQL 17 + pgvector
-├── ruff.toml                # Python linter config
-├── .pylintrc                # Pylint + pylint-odoo
-├── .isort.cfg               # Import sorter config
-└── pyrightconfig.json       # Type checker config
+│       └── res.country.state.csv      # Country states
+├── config/odoo.conf          # Primary Odoo config (used by Docker)
+├── docker-compose.yml        # Odoo + PostgreSQL services
+├── odoo.Dockerfile           # Odoo 19 image with ruff
+├── postgres.Dockerfile       # PostgreSQL 17 + pgvector
+├── ruff.toml                 # Python linter config
+├── .pylintrc                 # Pylint + pylint-odoo
+├── .isort.cfg                # Import sorter config
+└── pyrightconfig.json        # Type checker config
 ```
 
 ## Architecture
@@ -102,15 +163,29 @@ ruff format addons/
 | File | Purpose |
 |------|---------|
 | `addons/estate/__manifest__.py` | Module metadata, dependencies, data file loading order |
-| `addons/estate/models/property.py` | Property model with all field definitions |
-| `addons/estate/views/estate_property_views.xml` | Tree and form views for property |
-| `addons/estate/security/ir.model.access.csv` | Access control list |
+| `addons/estate/models/estate_property.py` | Property model: fields, state workflow, computed fields, actions |
+| `addons/estate/models/estate_property_offer.py` | Offer model: price, validity/deadline, accept/refuse logic |
+| `addons/estate/models/estate_property_type.py` | Property type model |
+| `addons/estate/models/estate_property_tag.py` | Property tag model |
+| `addons/estate/views/estate_property_views.xml` | List, form and search views for property |
+| `addons/estate/views/estate_property_menus.xml` | Menu hierarchy (Real Estate > Advertisements / Settings) |
+| `addons/estate/security/ir.model.access.csv` | Access control list (4 models) |
 | `config/odoo.conf` | Runtime Odoo configuration |
 
 ## Current State
 
-- Single model: `property` with 14 fields (Char, Text, Date, Float, Integer, Boolean, Selection)
-- Full CRUD permissions for all internal users
-- Basic tree + form views
-- Menu structure: Root > First Level > Properties
-- `active` field implemented for archive/unarchive functionality
+- 4 models: `estate.property`, `estate.property.type`, `estate.property.tag`,
+  `estate.property.offer`
+- Property lifecycle via `state` selection: new → offer_received →
+  offer_accepted → sold / cancelled (header buttons SOLD/CANCEL)
+- Offers: accept/refuse actions with validation (one accepted offer per
+  property; blocked on cancelled/sold properties); accepting sets buyer,
+  selling_price and property state
+- Computed fields: `total_area`, `best_offer` (property) and `date_deadline`
+  (offer, compute + inverse with `validity`)
+- Onchange: setting `garden=True` defaults garden area/orientation
+- SQL constraints in place: expected/selling/offer prices positive, unique
+  type/tag names
+- Full CRUD permissions for all internal users on the 4 models
+- Views: list + form (notebook: Description / Offers / Other info) + search
+  with filters/groupby; menus Real Estate > Advertisements / Settings
