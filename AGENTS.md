@@ -38,16 +38,8 @@ These instructions override any other source of context for this repository.
 - [x] Chapter 7: Relations Between Models
 - [x] Chapter 8: Computed Fields And Onchanges
 - [x] Chapter 9: Ready For Some Action?
-- [ ] **Chapter 10: Constraints — IN PROGRESS**
-  - SQL constraints done (expected/selling/offer price > 0, unique type/tag names).
-  - Pending: Python constraint — selling price cannot be lower than 90% of the
-    expected price. Requirements:
-    - `@api.constrains('selling_price', 'expected_price')`
-    - Skip check when selling price is zero (no accepted offer yet) using
-      `float_is_zero()`.
-    - Compare margin with `float_compare()`.
-    - Raise `ValidationError` from `odoo.exceptions`.
-- [ ] Chapter 11: Add The Sprinkles
+- [x] Chapter 10: Constraints
+- [ ] **Chapter 11: Add The Sprinkles — IN PROGRESS**
 - [ ] Chapter 12: Inheritance
 - [ ] Chapter 13: Interact With Other Modules
 - [ ] Chapter 14: A Brief History Of QWeb
@@ -186,6 +178,9 @@ ruff format addons/
 - Onchange: setting `garden=True` defaults garden area/orientation
 - SQL constraints in place: expected/selling/offer prices positive, unique
   type/tag names
+- Python constraint: `selling_price` must be >= 90% of `expected_price`
+  (`@api.constrains`, skips zero selling price with `float_is_zero()`,
+  margin via `float_compare()`)
 - Full CRUD permissions for all internal users on the 4 models
 - Views: list + form (notebook: Description / Offers / Other info) + search
   with filters/groupby; menus Real Estate > Advertisements / Settings
