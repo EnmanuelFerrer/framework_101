@@ -43,8 +43,8 @@ These instructions override any other source of context for this repository.
   - [x] Inline Views
   - [x] Widgets (statusbar)
   - [x] List Order (model ordering)
-  - [ ] Manual ordering (sequence + handle on property type)
-  - [ ] Attributes & Options (Form)
+  - [x] Manual ordering (sequence + handle on property type)
+  - [x] Attributes & Options (Form)
   - [ ] List (editable, decorations, optional)
   - [ ] Search (default filter, filter_domain)
   - [ ] Stat Buttons
