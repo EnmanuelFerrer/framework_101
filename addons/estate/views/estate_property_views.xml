@@ -10,7 +10,12 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list
+                string="Properties"
+                decoration-success="state == 'offer_accepted' or state == 'offer_received'"
+                decoration-bf="state == 'offer_accepted'"
+                decoration-muted="state == 'sold'"
+            >
                 <field name="name" />
                 <field name="postcode" />
                 <field name="state" />
@@ -22,6 +27,7 @@
                 <field name="garage" />
                 <field name="garden" />
                 <field name="property_type_id" />
+                <field name="date_availability" optional="hide" />
             </list>
         </field>
     </record>
@@ -74,8 +80,13 @@
                         </page>
 
                         <page string="Offers">
-                            <field name="offer_ids" readonly="state == 'offer_accepted' or state == 'sold' or state == 'cancelled'">
-                                <list>
+                            <field name="offer_ids"
+                                readonly="state == 'offer_accepted' or state == 'sold' or state == 'cancelled'">
+                                <list
+                                    decoration-success="status == 'accepted'"
+                                    decoration-danger="status == 'refused'"
+                                    editable="bottom"
+                                >
                                     <field name="price" />
                                     <field name="buyer_id" />
                                     <field name="validity" />
@@ -84,7 +95,7 @@
                                         icon="fa-check" invisible="status" />
                                     <button name="action_set_status_refused" type="object"
                                         icon="fa-close" invisible="status" />
-                                    <field name="status" />
+                                    <field name="status" column_invisible="1" />
                                 </list>
                             </field>
                         </page>
