@@ -27,6 +27,22 @@ These instructions override any other source of context for this repository.
 - Tutorial index: https://www.odoo.com/documentation/19.0/developer/tutorials/server_framework_101.html
 - ORM changelog: https://www.odoo.com/documentation/19.0/developer/reference/backend/orm/changelog.html
 
+### Fetching tutorial/docs pages (strip the navigation)
+
+Fetching any `odoo.com/documentation` page returns ~150 KB where >90% is the
+site-wide sidebar navigation; the actual content starts very late in the
+output (e.g. line ~2000 of the fetched markdown). Do NOT read that boilerplate.
+
+- **Preferred:** fetch the raw `.rst` source from GitHub instead — same
+  content, zero navigation:
+  `https://raw.githubusercontent.com/odoo/documentation/19.0/content/<doc_path>/<file>.rst`
+  Tutorial chapters example:
+  `https://raw.githubusercontent.com/odoo/documentation/19.0/content/developer/tutorials/server_framework_101/11_sprinkles.rst`
+  (file names are visible in each page's "Edit on GitHub" link at the bottom).
+- **Fallback:** if the odoo.com HTML page was already fetched, search the
+  output for the first `# Chapter ...` heading and read only from there;
+  ignore everything before it (menu/sidebar boilerplate).
+
 ## Tutorial Progress (Server Framework 101)
 
 - [x] Chapter 1: Architecture Overview
@@ -40,14 +56,28 @@ These instructions override any other source of context for this repository.
 - [x] Chapter 9: Ready For Some Action?
 - [x] Chapter 10: Constraints
 - [ ] **Chapter 11: Add The Sprinkles — IN PROGRESS**
-  - [x] Inline Views
-  - [x] Widgets (statusbar)
-  - [x] List Order (model ordering)
-  - [x] Manual ordering (sequence + handle on property type)
-  - [x] Attributes & Options (Form)
-  - [ ] List (editable, decorations, optional)
-  - [ ] Search (default filter, filter_domain)
-  - [ ] Stat Buttons
+  - [x] Inline Views (`property_ids` One2many + inline list in type form)
+  - [x] Widgets (statusbar on state)
+  - [x] List Order (model `_order`: property id desc / offer price desc /
+        tag name / type sequence,name) + Manual ordering (sequence +
+        handle widget on type)
+  - [x] Attributes & Options (Form): `no_create` options on
+        `property_type_id`, tag `color` field + `color_field` option,
+        conditional header buttons, invisible garden fields, readonly
+        offer_ids by state
+  - [x] List — Editable lists (offer + tag `editable="bottom"`)
+  - [x] List — Optional field (`date_availability optional="hide"`)
+  - [ ] List — Decorations:
+    - [ ] Property list by state: offer_received=green,
+          offer_accepted=green+bold, sold=muted (MISSING entirely)
+    - [ ] Offer list: refused=red (fix invalid attr `decoration-r` →
+          `decoration-danger`), hide `status` column
+          (`column_invisible="1"`; keep field for button conditions)
+  - [ ] Search: default filter 'Available' via action context +
+        `filter_domain` (>=) on living_area
+  - [ ] Stat Buttons: stored related `property_type_id` on offer,
+        `offer_ids` inverse + computed `offer_count` on type, stat
+        button (`type="action"`) with domain on active_id
 - [ ] Chapter 12: Inheritance
 - [ ] Chapter 13: Interact With Other Modules
 - [ ] Chapter 14: A Brief History Of QWeb
