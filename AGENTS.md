@@ -23,9 +23,9 @@ These instructions override any other source of context for this repository.
 
 ### Official references
 
-- ORM API: https://www.odoo.com/documentation/19.0/developer/reference/backend/orm.html
-- Tutorial index: https://www.odoo.com/documentation/19.0/developer/tutorials/server_framework_101.html
-- ORM changelog: https://www.odoo.com/documentation/19.0/developer/reference/backend/orm/changelog.html
+- ORM API: <https://www.odoo.com/documentation/19.0/developer/reference/backend/orm.html>
+- Tutorial index: <https://www.odoo.com/documentation/19.0/developer/tutorials/server_framework_101.html>
+- ORM changelog: <https://www.odoo.com/documentation/19.0/developer/reference/backend/orm/changelog.html>
 
 ### Fetching tutorial/docs pages (strip the navigation)
 
