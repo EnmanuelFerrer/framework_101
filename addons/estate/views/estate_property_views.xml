@@ -32,8 +32,10 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_set_state_sold" string="SOLD" type="object" />
-                    <button name="action_set_state_cancelled" string="CANCEL" type="object" />
+                    <button name="action_set_state_sold" string="SOLD" type="object"
+                        invisible="state == 'sold' or state == 'cancelled'" />
+                    <button name="action_set_state_cancelled" string="CANCEL" type="object"
+                        invisible="state == 'sold' or state == 'cancelled'" />
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
