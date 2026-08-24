@@ -67,13 +67,13 @@ class EstatePropertyOffer(models.Model):
 
             offer.status = "accepted"
 
-            offer.property_id.write(
-                {
-                    "buyer_id": offer.buyer_id.id,
-                    "selling_price": offer.price,
-                    "state": "offer_accepted",
-                }
-            )
+            # offer.property_id.write(
+            #     {
+            #         "buyer_id": offer.buyer_id.id,
+            #         "selling_price": offer.price,
+            #         "state": "offer_accepted",
+            #     }
+            # )
 
             offer.property_id.buyer_id = offer.buyer_id
             offer.property_id.selling_price = offer.price
