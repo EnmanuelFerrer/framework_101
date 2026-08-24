@@ -33,8 +33,11 @@ Fetching any `odoo.com/documentation` page returns ~150 KB where >90% is the
 site-wide sidebar navigation; the actual content starts very late in the
 output (e.g. line ~2000 of the fetched markdown). Do NOT read that boilerplate.
 
-- **Preferred:** fetch the raw `.rst` source from GitHub instead — same
-  content, zero navigation:
+- **Local mirror (fastest):** all tutorial chapters are stored in the repo
+  under `docs/server_framework_101/*.rst` — read them locally first before
+  fetching anything from the web.
+- **Preferred remote:** fetch the raw `.rst` source from GitHub instead of
+  the HTML page — same content, zero navigation:
   `https://raw.githubusercontent.com/odoo/documentation/19.0/content/<doc_path>/<file>.rst`
   Tutorial chapters example:
   `https://raw.githubusercontent.com/odoo/documentation/19.0/content/developer/tutorials/server_framework_101/11_sprinkles.rst`
