@@ -40,6 +40,14 @@ These instructions override any other source of context for this repository.
 - [x] Chapter 9: Ready For Some Action?
 - [x] Chapter 10: Constraints
 - [ ] **Chapter 11: Add The Sprinkles — IN PROGRESS**
+  - [x] Inline Views
+  - [x] Widgets (statusbar)
+  - [x] List Order (model ordering)
+  - [ ] Manual ordering (sequence + handle on property type)
+  - [ ] Attributes & Options (Form)
+  - [ ] List (editable, decorations, optional)
+  - [ ] Search (default filter, filter_domain)
+  - [ ] Stat Buttons
 - [ ] Chapter 12: Inheritance
 - [ ] Chapter 13: Interact With Other Modules
 - [ ] Chapter 14: A Brief History Of QWeb
