@@ -67,23 +67,23 @@
                                 <field name="facades" />
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
+                                <field name="garden_area" invisible="not garden" />
+                                <field name="garden_orientation" invisible="not garden" />
                                 <field name="total_area" />
                             </group>
                         </page>
 
                         <page string="Offers">
-                            <field name="offer_ids">
+                            <field name="offer_ids" readonly="state == 'offer_accepted' or state == 'sold' or state == 'cancelled'">
                                 <list>
                                     <field name="price" />
                                     <field name="buyer_id" />
                                     <field name="validity" />
                                     <field name="date_deadline" />
                                     <button name="action_set_status_accepted" type="object"
-                                        icon="fa-check" />
+                                        icon="fa-check" invisible="status" />
                                     <button name="action_set_status_refused" type="object"
-                                        icon="fa-close" />
+                                        icon="fa-close" invisible="status" />
                                     <field name="status" />
                                 </list>
                             </field>
