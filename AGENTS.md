@@ -91,8 +91,23 @@ output (e.g. line ~2000 of the fetched markdown). Do NOT read that boilerplate.
     - [ ] Extend `base.view_users_form` with `property_ids` in a new
           notebook page (`inherit_id` + xpath)
 - [ ] Chapter 13: Interact With Other Modules
+  - [ ] Link module: create `estate_account` (depends on `estate` + `account`)
+  - [ ] Model inheritance: override `action_sold` on `estate.property` from
+        `estate_account` module (super call)
+  - [ ] Invoice creation: create `account.move` (Customer Invoice) when
+        property is sold (`partner_id` from buyer)
+  - [ ] Invoice lines: two lines — 6% of selling price + 100.00 admin
+        fees (use `Command.create` in `invoice_line_ids`)
 - [ ] Chapter 14: A Brief History Of QWeb
+  - [ ] Minimal kanban view: only `name` field, add `kanban` to
+        `view_mode`
+  - [ ] Improved kanban: expected price, best price (if offer received),
+        selling price (if offer accepted), tags
+  - [ ] Default grouping by property type + prevent drag and drop
 - [ ] Chapter 15: The final word
+  - [ ] Refactor code to match Odoo coding guidelines (lint, naming,
+        module structure, XML IDs)
+  - [ ] Test on runbot (exploration only, no code)
 
 When a chapter is completed, mark its checkbox and move the IN PROGRESS marker
 to the next chapter before starting new work.
