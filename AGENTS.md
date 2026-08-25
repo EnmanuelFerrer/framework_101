@@ -80,7 +80,7 @@ output (e.g. line ~2000 of the fetched markdown). Do NOT read that boilerplate.
         button (`type="action"`) with domain on active_id
 - [ ] **Chapter 12: Inheritance — IN PROGRESS**
   - [ ] Python Inheritance — CRUD methods:
-    - [ ] Prevent deletion of property if state is not 'New' or 'Cancelled'
+    - [x] Prevent deletion of property if state is not 'New' or 'Cancelled'
           (`@api.ondelete`)
     - [ ] On offer creation: set property state to 'Offer Received' + raise
           error if offer price < existing offer price (`create` override)
