@@ -78,7 +78,18 @@ output (e.g. line ~2000 of the fetched markdown). Do NOT read that boilerplate.
   - [x] Stat Buttons: stored related `property_type_id` on offer,
         `offer_ids` inverse + computed `offer_count` on type, stat
         button (`type="action"`) with domain on active_id
-- [ ] **Chapter 12: Inheritance — NEXT**
+- [ ] **Chapter 12: Inheritance — IN PROGRESS**
+  - [ ] Python Inheritance — CRUD methods:
+    - [ ] Prevent deletion of property if state is not 'New' or 'Cancelled'
+          (`@api.ondelete`)
+    - [ ] On offer creation: set property state to 'Offer Received' + raise
+          error if offer price < existing offer price (`create` override)
+  - [ ] Model Inheritance — `res.users`:
+    - [ ] Add `property_ids` (One2many) inverse of `salesperson_id` in
+          `estate.property`, with domain to only show available properties
+  - [ ] View Inheritance — Users form:
+    - [ ] Extend `base.view_users_form` with `property_ids` in a new
+          notebook page (`inherit_id` + xpath)
 - [ ] Chapter 13: Interact With Other Modules
 - [ ] Chapter 14: A Brief History Of QWeb
 - [ ] Chapter 15: The final word
