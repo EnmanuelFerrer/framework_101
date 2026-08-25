@@ -30,6 +30,13 @@ class EstatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
     )
 
+    property_type_id = fields.Many2one(
+        "estate.property.type", 
+        related="property_id.property_type_id",
+        string="Property type", 
+        store=True
+    )
+
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for record in self:
