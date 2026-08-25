@@ -58,7 +58,7 @@ output (e.g. line ~2000 of the fetched markdown). Do NOT read that boilerplate.
 - [x] Chapter 8: Computed Fields And Onchanges
 - [x] Chapter 9: Ready For Some Action?
 - [x] Chapter 10: Constraints
-- [ ] **Chapter 11: Add The Sprinkles — IN PROGRESS**
+- [x] Chapter 11: Add The Sprinkles
   - [x] Inline Views (`property_ids` One2many + inline list in type form)
   - [x] Widgets (statusbar on state)
   - [x] List Order (model `_order`: property id desc / offer price desc /
@@ -70,18 +70,15 @@ output (e.g. line ~2000 of the fetched markdown). Do NOT read that boilerplate.
         offer_ids by state
   - [x] List — Editable lists (offer + tag `editable="bottom"`)
   - [x] List — Optional field (`date_availability optional="hide"`)
-  - [ ] List — Decorations:
-    - [ ] Property list by state: offer_received=green,
-          offer_accepted=green+bold, sold=muted (MISSING entirely)
-    - [ ] Offer list: refused=red (fix invalid attr `decoration-r` →
-          `decoration-danger`), hide `status` column
-          (`column_invisible="1"`; keep field for button conditions)
-  - [ ] Search: default filter 'Available' via action context +
+  - [x] List — Decorations: property list by state (green/green+bold/muted),
+        offer list (green accepted/red refused), hidden `status` column
+        (`column_invisible="1"`)
+  - [x] Search: default filter 'Available' via action context +
         `filter_domain` (>=) on living_area
-  - [ ] Stat Buttons: stored related `property_type_id` on offer,
+  - [x] Stat Buttons: stored related `property_type_id` on offer,
         `offer_ids` inverse + computed `offer_count` on type, stat
         button (`type="action"`) with domain on active_id
-- [ ] Chapter 12: Inheritance
+- [ ] **Chapter 12: Inheritance — NEXT**
 - [ ] Chapter 13: Interact With Other Modules
 - [ ] Chapter 14: A Brief History Of QWeb
 - [ ] Chapter 15: The final word
@@ -110,8 +107,9 @@ framework_101/
 │   │   └── estate_property_offer.py   # estate.property.offer model
 │   ├── views/
 │   │   ├── estate_property_views.xml        # List + form + search views
-│   │   ├── estate_property_type_views.xml   # Type CRUD views
+│   │   ├── estate_property_type_views.xml   # Type CRUD views + stat button
 │   │   ├── estate_property_tag_views.xml    # Tag CRUD views
+│   │   ├── estate_property_offer_views.xml  # Offer list (stat button target)
 │   │   └── estate_property_menus.xml        # Menu hierarchy
 │   ├── security/
 │   │   └── ir.model.access.csv        # CRUD permissions (4 models)
@@ -201,6 +199,9 @@ ruff format addons/
 | `addons/estate/models/estate_property_type.py` | Property type model |
 | `addons/estate/models/estate_property_tag.py` | Property tag model |
 | `addons/estate/views/estate_property_views.xml` | List, form and search views for property |
+| `addons/estate/views/estate_property_type_views.xml` | Type CRUD views + stat button |
+| `addons/estate/views/estate_property_tag_views.xml` | Tag CRUD views |
+| `addons/estate/views/estate_property_offer_views.xml` | Offer list (stat button target) |
 | `addons/estate/views/estate_property_menus.xml` | Menu hierarchy (Real Estate > Advertisements / Settings) |
 | `addons/estate/security/ir.model.access.csv` | Access control list (4 models) |
 | `config/odoo.conf` | Runtime Odoo configuration |
@@ -225,3 +226,10 @@ ruff format addons/
 - Full CRUD permissions for all internal users on the 4 models
 - Views: list + form (notebook: Description / Offers / Other info) + search
   with filters/groupby; menus Real Estate > Advertisements / Settings
+- List decorations: property by state (green/green+bold/muted), offer by
+  status (green accepted/red refused)
+- Editable lists for offer and tag; optional `date_availability` (hidden)
+- Default search filter 'Available' via action context; `filter_domain`
+  on living_area for `>=` search
+- Stat button on property type form: shows offer count, filters offers by
+  `property_type_id = active_id` via related stored field
