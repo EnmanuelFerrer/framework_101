@@ -31,10 +31,10 @@ class EstatePropertyOffer(models.Model):
     )
 
     property_type_id = fields.Many2one(
-        "estate.property.type", 
+        "estate.property.type",
         related="property_id.property_type_id",
-        string="Property type", 
-        store=True
+        string="Property type",
+        store=True,
     )
 
     @api.depends("create_date", "validity")
@@ -94,3 +94,21 @@ class EstatePropertyOffer(models.Model):
 
             offer.status = "refused"
         return True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if "property_id" in vals and "price" in vals:
+                # if ("property_id", "amount") in vals:
+                property_record = self.env["estate.property"].browse(
+                    vals["property_id"]
+                )
+
+                existing_prices = property_record.offer_ids.mapped("price")
+                if existing_prices and vals["price"] < max(existing_prices):
+                    raise UserError(
+                        "The offer amount cannot be lower than an existing offer."
+                    )
+
+                property_record.state = "offer_received"
+        return super(EstatePropertyOffer, self).create(vals_list)
