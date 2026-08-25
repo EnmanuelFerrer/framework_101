@@ -87,8 +87,8 @@ output (e.g. line ~2000 of the fetched markdown). Do NOT read that boilerplate.
   - [x] Model Inheritance — `res.users`:
     - [x] Add `property_ids` (One2many) inverse of `salesperson_id` in
           `estate.property`, with domain to only show available properties
-  - [ ] View Inheritance — Users form:
-    - [ ] Extend `base.view_users_form` with `property_ids` in a new
+  - [x] View Inheritance — Users form:
+    - [x] Extend `base.view_users_form` with `property_ids` in a new
           notebook page (`inherit_id` + xpath)
 - [ ] Chapter 13: Interact With Other Modules
   - [ ] Link module: create `estate_account` (depends on `estate` + `account`)
@@ -224,7 +224,7 @@ ruff format addons/
 | `addons/estate/models/estate_property_offer.py` | Offer model: price, validity/deadline, accept/refuse logic |
 | `addons/estate/models/estate_property_type.py` | Property type model |
 | `addons/estate/models/estate_property_tag.py` | Property tag model |
-| `addons/estate/models/inherited_model.py` | `res.users` inheritance: adds `property_ids` (available properties) |
+| `addons/estate/models/res_users.py` | `res.users` inheritance: adds `property_ids` (available properties) |
 | `addons/estate/views/estate_property_views.xml` | List, form and search views for property |
 | `addons/estate/views/estate_property_type_views.xml` | Type CRUD views + stat button |
 | `addons/estate/views/estate_property_tag_views.xml` | Tag CRUD views |
@@ -235,8 +235,8 @@ ruff format addons/
 
 ## Current State
 
-- 4 models: `estate.property`, `estate.property.type`, `estate.property.tag`,
-  `estate.property.offer`
+- 5 models: `estate.property`, `estate.property.type`, `estate.property.tag`,
+  `estate.property.offer`, `res.users` (inherited)
 - Property lifecycle via `state` selection: new → offer_received →
   offer_accepted → sold / cancelled (header buttons SOLD/CANCEL)
 - Offers: accept/refuse actions with validation (one accepted offer per
