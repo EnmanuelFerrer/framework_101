@@ -78,6 +78,7 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.buyer_id = offer.buyer_id
             offer.property_id.selling_price = offer.price
             offer.property_id.state = "offer_accepted"
+        return True
 
     def action_set_status_refused(self):
         for offer in self:
@@ -85,3 +86,4 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("Accepted offers cannot be cancelled.")
 
             offer.status = "refused"
+        return True
