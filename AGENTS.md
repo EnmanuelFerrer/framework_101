@@ -79,13 +79,13 @@ output (e.g. line ~2000 of the fetched markdown). Do NOT read that boilerplate.
         `offer_ids` inverse + computed `offer_count` on type, stat
         button (`type="action"`) with domain on active_id
 - [ ] **Chapter 12: Inheritance — IN PROGRESS**
-  - [ ] Python Inheritance — CRUD methods:
+  - [x] Python Inheritance — CRUD methods:
     - [x] Prevent deletion of property if state is not 'New' or 'Cancelled'
           (`@api.ondelete`)
-    - [ ] On offer creation: set property state to 'Offer Received' + raise
+    - [x] On offer creation: set property state to 'Offer Received' + raise
           error if offer price < existing offer price (`create` override)
-  - [ ] Model Inheritance — `res.users`:
-    - [ ] Add `property_ids` (One2many) inverse of `salesperson_id` in
+  - [x] Model Inheritance — `res.users`:
+    - [x] Add `property_ids` (One2many) inverse of `salesperson_id` in
           `estate.property`, with domain to only show available properties
   - [ ] View Inheritance — Users form:
     - [ ] Extend `base.view_users_form` with `property_ids` in a new
@@ -224,6 +224,7 @@ ruff format addons/
 | `addons/estate/models/estate_property_offer.py` | Offer model: price, validity/deadline, accept/refuse logic |
 | `addons/estate/models/estate_property_type.py` | Property type model |
 | `addons/estate/models/estate_property_tag.py` | Property tag model |
+| `addons/estate/models/inherited_model.py` | `res.users` inheritance: adds `property_ids` (available properties) |
 | `addons/estate/views/estate_property_views.xml` | List, form and search views for property |
 | `addons/estate/views/estate_property_type_views.xml` | Type CRUD views + stat button |
 | `addons/estate/views/estate_property_tag_views.xml` | Tag CRUD views |

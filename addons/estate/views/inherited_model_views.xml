@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+  <record id="inherited_model_action" model="ir.actions.act_window">
+    <field name="name">Inherited Model</field>
+    <field name="res_model">inherited.model</field>
+    <field name="view_mode">list,form</field>
+    <!-- TODO: read domain docs -->
+    <field name="domain">[('available', '=', available)]</field>
+  </record>
+
+  
+
+</odoo>
