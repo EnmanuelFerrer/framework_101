@@ -78,7 +78,7 @@ output (e.g. line ~2000 of the fetched markdown). Do NOT read that boilerplate.
   - [x] Stat Buttons: stored related `property_type_id` on offer,
         `offer_ids` inverse + computed `offer_count` on type, stat
         button (`type="action"`) with domain on active_id
-- [ ] **Chapter 12: Inheritance — IN PROGRESS**
+- [x] Chapter 12: Inheritance
   - [x] Python Inheritance — CRUD methods:
     - [x] Prevent deletion of property if state is not 'New' or 'Cancelled'
           (`@api.ondelete`)
@@ -90,7 +90,7 @@ output (e.g. line ~2000 of the fetched markdown). Do NOT read that boilerplate.
   - [x] View Inheritance — Users form:
     - [x] Extend `base.view_users_form` with `property_ids` in a new
           notebook page (`inherit_id` + xpath)
-- [ ] Chapter 13: Interact With Other Modules
+- [ ] **Chapter 13: Interact With Other Modules — IN PROGRESS**
   - [ ] Link module: create `estate_account` (depends on `estate` + `account`)
   - [ ] Model inheritance: override `action_sold` on `estate.property` from
         `estate_account` module (super call)
@@ -136,6 +136,7 @@ framework_101/
 │   │   ├── estate_property_type_views.xml   # Type CRUD views + stat button
 │   │   ├── estate_property_tag_views.xml    # Tag CRUD views
 │   │   ├── estate_property_offer_views.xml  # Offer list (stat button target)
+│   │   ├── res_users_views.xml              # Users form inheritance
 │   │   └── estate_property_menus.xml        # Menu hierarchy
 │   ├── security/
 │   │   └── ir.model.access.csv        # CRUD permissions (4 models)
@@ -229,6 +230,7 @@ ruff format addons/
 | `addons/estate/views/estate_property_type_views.xml` | Type CRUD views + stat button |
 | `addons/estate/views/estate_property_tag_views.xml` | Tag CRUD views |
 | `addons/estate/views/estate_property_offer_views.xml` | Offer list (stat button target) |
+| `addons/estate/views/res_users_views.xml` | Users form view inheritance: property_ids notebook page |
 | `addons/estate/views/estate_property_menus.xml` | Menu hierarchy (Real Estate > Advertisements / Settings) |
 | `addons/estate/security/ir.model.access.csv` | Access control list (4 models) |
 | `config/odoo.conf` | Runtime Odoo configuration |
@@ -251,6 +253,11 @@ ruff format addons/
   (`@api.constrains`, skips zero selling price with `float_is_zero()`,
   margin via `float_compare()`)
 - Full CRUD permissions for all internal users on the 4 models
+- CRUD method overrides: `@api.ondelete` blocks deletion of non-new/cancelled
+  properties; offer `create` override sets state to 'Offer Received' and
+  blocks lower-price offers
+- `res.users` inheritance: `property_ids` (One2many, domain: state='new')
+  with notebook page in user form view
 - Views: list + form (notebook: Description / Offers / Other info) + search
   with filters/groupby; menus Real Estate > Advertisements / Settings
 - List decorations: property by state (green/green+bold/muted), offer by
