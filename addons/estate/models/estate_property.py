@@ -233,3 +233,9 @@ class EstateProperty(models.Model):
                     "Selling price must be at least 90% of the expected price. "
                     "You must reduce expected price to accept this offer."
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_cancelled(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError("Only new or cancelled properties can be deleted.")
