@@ -91,9 +91,9 @@ output (e.g. line ~2000 of the fetched markdown). Do NOT read that boilerplate.
     - [x] Extend `base.view_users_form` with `property_ids` in a new
           notebook page (`inherit_id` + xpath)
 - [ ] **Chapter 13: Interact With Other Modules — IN PROGRESS**
-  - [ ] Link module: create `estate_account` (depends on `estate` + `account`)
-  - [ ] Model inheritance: override `action_sold` on `estate.property` from
-        `estate_account` module (super call)
+  - [x] Link module: create `estate_account` (depends on `estate` + `account`)
+  - [x] Model inheritance: override `action_set_state_sold` on
+        `estate.property` from `estate_account` module (super call)
   - [ ] Invoice creation: create `account.move` (Customer Invoice) when
         property is sold (`partner_id` from buyer)
   - [ ] Invoice lines: two lines — 6% of selling price + 100.00 admin
@@ -114,13 +114,15 @@ to the next chapter before starting new work.
 
 ## Project Overview
 
-Dockerized Odoo 19 development environment for learning the Server Framework 101 tutorial. Contains a single custom addon (`estate`) for real estate property management.
+Dockerized Odoo 19 development environment for learning the Server Framework
+101 tutorial. Contains a custom addon (`estate`) and a link module
+(`estate_account`) for real estate property management.
 
 **Author:** Enmanuel Ferrer
 
 ## Project Structure
 
-```
+```text
 framework_101/
 ├── addons/estate/           # Custom addon (mounted at /mnt/custom-addons in Docker)
 │   ├── __manifest__.py      # Module manifest (v19.0.1.0.0)
@@ -142,6 +144,12 @@ framework_101/
 │   │   └── ir.model.access.csv        # CRUD permissions (4 models)
 │   └── data/
 │       └── res.country.state.csv      # Country states
+├── addons/estate_account/   # Link module: estate + account (invoice creation)
+│   ├── __manifest__.py      # Depends on estate + account
+│   ├── __init__.py
+│   └── models/
+│       ├── __init__.py
+│       └── estate_property.py  # Inherits estate.property, overrides action_set_state_sold
 ├── config/odoo.conf          # Primary Odoo config (used by Docker)
 ├── docker-compose.yml        # Odoo + PostgreSQL services
 ├── odoo.Dockerfile           # Odoo 19 image with ruff
@@ -162,36 +170,43 @@ framework_101/
 ## Commands
 
 ### Start environment
+
 ```bash
 docker compose up -d
 ```
 
 ### Stop environment
+
 ```bash
 docker compose down
 ```
 
 ### Restart Odoo (after code changes)
+
 ```bash
 docker compose restart odoo
 ```
 
 ### Update module (after model/view changes)
+
 ```bash
 docker compose exec odoo odoo -d <db_name> -u estate --stop-after-init
 ```
 
 ### Access Odoo shell
+
 ```bash
 docker compose exec odoo odoo shell -d <db_name>
 ```
 
 ### Run ruff linter
+
 ```bash
 ruff check addons/
 ```
 
 ### Run ruff formatter
+
 ```bash
 ruff format addons/
 ```
@@ -199,16 +214,19 @@ ruff format addons/
 ## Code Conventions
 
 ### XML Views
+
 - Window actions define the model and view modes
 - Menu items reference actions via `action=` attribute
 - View inheritance uses `inherit_id` and `position` attributes
 
 ### File Organization
+
 - Models go in `models/` directory, one model per file
 - Views go in `views/` directory
 - Security rules go in `security/` as CSV
 - Static data goes in `data/` as CSV
-- Always register new files in `__manifest__.py` under the `data` key (order matters: security first, then data, then views)
+- Always register new files in `__manifest__.py` under the `data` key
+  (order matters: security first, then data, then views)
 
 ## Linter Configuration
 
@@ -218,22 +236,24 @@ ruff format addons/
 
 ## Key Files Reference
 
-| File | Purpose |
-|------|---------|
-| `addons/estate/__manifest__.py` | Module metadata, dependencies, data file loading order |
-| `addons/estate/models/estate_property.py` | Property model: fields, state workflow, computed fields, actions |
-| `addons/estate/models/estate_property_offer.py` | Offer model: price, validity/deadline, accept/refuse logic |
-| `addons/estate/models/estate_property_type.py` | Property type model |
-| `addons/estate/models/estate_property_tag.py` | Property tag model |
-| `addons/estate/models/res_users.py` | `res.users` inheritance: adds `property_ids` (available properties) |
-| `addons/estate/views/estate_property_views.xml` | List, form and search views for property |
-| `addons/estate/views/estate_property_type_views.xml` | Type CRUD views + stat button |
-| `addons/estate/views/estate_property_tag_views.xml` | Tag CRUD views |
-| `addons/estate/views/estate_property_offer_views.xml` | Offer list (stat button target) |
-| `addons/estate/views/res_users_views.xml` | Users form view inheritance: property_ids notebook page |
-| `addons/estate/views/estate_property_menus.xml` | Menu hierarchy (Real Estate > Advertisements / Settings) |
-| `addons/estate/security/ir.model.access.csv` | Access control list (4 models) |
-| `config/odoo.conf` | Runtime Odoo configuration |
+| File                                                  | Purpose                                                             |
+| ----------------------------------------------------- | ------------------------------------------------------------------- |
+| `addons/estate/__manifest__.py`                       | Module metadata, dependencies, data file loading order              |
+| `addons/estate/models/estate_property.py`             | Property model: fields, state workflow, computed fields, actions    |
+| `addons/estate/models/estate_property_offer.py`       | Offer model: price, validity/deadline, accept/refuse logic          |
+| `addons/estate/models/estate_property_type.py`        | Property type model                                                 |
+| `addons/estate/models/estate_property_tag.py`         | Property tag model                                                  |
+| `addons/estate/models/res_users.py`                   | `res.users` inheritance: adds `property_ids` (available properties) |
+| `addons/estate/views/estate_property_views.xml`       | List, form and search views for property                            |
+| `addons/estate/views/estate_property_type_views.xml`  | Type CRUD views + stat button                                       |
+| `addons/estate/views/estate_property_tag_views.xml`   | Tag CRUD views                                                      |
+| `addons/estate/views/estate_property_offer_views.xml` | Offer list (stat button target)                                     |
+| `addons/estate/views/res_users_views.xml`             | Users form view inheritance: property_ids notebook page             |
+| `addons/estate/views/estate_property_menus.xml`       | Menu hierarchy (Real Estate > Advertisements / Settings)            |
+| `addons/estate/security/ir.model.access.csv`          | Access control list (4 models)                                      |
+| `addons/estate_account/__manifest__.py`               | Link module metadata: depends on estate + account                   |
+| `addons/estate_account/models/estate_property.py`     | Inherits estate.property, overrides action_set_state_sold           |
+| `config/odoo.conf`                                    | Runtime Odoo configuration                                          |
 
 ## Current State
 
@@ -256,6 +276,8 @@ ruff format addons/
 - CRUD method overrides: `@api.ondelete` blocks deletion of non-new/cancelled
   properties; offer `create` override sets state to 'Offer Received' and
   blocks lower-price offers
+- `estate_account` link module: inherits `estate.property`, overrides
+  `action_set_state_sold` with super call (invoice creation pending)
 - `res.users` inheritance: `property_ids` (One2many, domain: state='new')
   with notebook page in user form view
 - Views: list + form (notebook: Description / Offers / Other info) + search
