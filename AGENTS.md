@@ -98,12 +98,12 @@ output (e.g. line ~2000 of the fetched markdown). Do NOT read that boilerplate.
         property is sold (`partner_id` from buyer)
   - [ ] Invoice lines: two lines — 6% of selling price + 100.00 admin
         fees (use `Command.create` in `invoice_line_ids`)
-- [ ] Chapter 14: A Brief History Of QWeb
-  - [ ] Minimal kanban view: only `name` field, add `kanban` to
+- [x] Chapter 14: A Brief History Of QWeb
+  - [x] Minimal kanban view: only `name` field, add `kanban` to
         `view_mode`
-  - [ ] Improved kanban: expected price, best price (if offer received),
+  - [x] Improved kanban: expected price, best price (if offer received),
         selling price (if offer accepted), tags
-  - [ ] Default grouping by property type + prevent drag and drop
+  - [x] Default grouping by property type + prevent drag and drop
 - [ ] Chapter 15: The final word
   - [ ] Refactor code to match Odoo coding guidelines (lint, naming,
         module structure, XML IDs)
@@ -134,7 +134,7 @@ framework_101/
 │   │   ├── estate_property_tag.py     # estate.property.tag model
 │   │   └── estate_property_offer.py   # estate.property.offer model
 │   ├── views/
-│   │   ├── estate_property_views.xml        # List + form + search views
+│   │   ├── estate_property_views.xml        # List + form + search + kanban views
 │   │   ├── estate_property_type_views.xml   # Type CRUD views + stat button
 │   │   ├── estate_property_tag_views.xml    # Tag CRUD views
 │   │   ├── estate_property_offer_views.xml  # Offer list (stat button target)
@@ -244,7 +244,7 @@ ruff format addons/
 | `addons/estate/models/estate_property_type.py`        | Property type model                                                 |
 | `addons/estate/models/estate_property_tag.py`         | Property tag model                                                  |
 | `addons/estate/models/res_users.py`                   | `res.users` inheritance: adds `property_ids` (available properties) |
-| `addons/estate/views/estate_property_views.xml`       | List, form and search views for property                            |
+| `addons/estate/views/estate_property_views.xml`       | List, form, search and kanban views for property                   |
 | `addons/estate/views/estate_property_type_views.xml`  | Type CRUD views + stat button                                       |
 | `addons/estate/views/estate_property_tag_views.xml`   | Tag CRUD views                                                      |
 | `addons/estate/views/estate_property_offer_views.xml` | Offer list (stat button target)                                     |
@@ -281,7 +281,8 @@ ruff format addons/
 - `res.users` inheritance: `property_ids` (One2many, domain: state='new')
   with notebook page in user form view
 - Views: list + form (notebook: Description / Offers / Other info) + search
-  with filters/groupby; menus Real Estate > Advertisements / Settings
+  with filters/groupby + kanban (grouped by type, no drag); menus
+  Real Estate > Advertisements / Settings
 - List decorations: property by state (green/green+bold/muted), offer by
   status (green accepted/red refused)
 - Editable lists for offer and tag; optional `date_availability` (hidden)
