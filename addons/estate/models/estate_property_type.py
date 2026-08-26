@@ -6,18 +6,24 @@ class EstatePropertyType(models.Model):
     _description = "Estate Property Type"
     _order = "sequence, name"
 
-    _check_name = models.Constraint("unique (name)", "Name must be unique.")
+    _check_name = models.Constraint(
+        definition="unique (name)", message="Name must be unique."
+    )
 
     name = fields.Char(string="Name", required=True)
-    sequence = fields.Integer("Sequence", default=1, help="Used to order types")
+    sequence = fields.Integer(string="Sequence", default=1, help="Used to order types")
     property_ids = fields.One2many(
-        "estate.property", "property_type_id", string="Properties"
+        string="Properties",
+        comodel_name="estate.property",
+        inverse_name="property_type_id",
     )
     offer_ids = fields.One2many(
-        "estate.property.offer", "property_type_id", string="Offers"
+        string="Offers",
+        comodel_name="estate.property.offer",
+        inverse_name="property_type_id",
     )
     offer_count = fields.Integer(
-        "Offer Count",
+        string="Offer Count",
         compute="_compute_offer_count",
     )
 

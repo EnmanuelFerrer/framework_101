@@ -28,11 +28,12 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)", "Expected price must be positive."
+        definition="CHECK(expected_price > 0)",
+        message="Expected price must be positive.",
     )
 
     _check_selling_price = models.Constraint(
-        "CHECK(selling_price > 0)", "Selling price must be positive."
+        definition="CHECK(selling_price > 0)", message="Selling price must be positive."
     )
 
     # -------------------------------------------------------------------------
@@ -133,7 +134,7 @@ class EstateProperty(models.Model):
     # - 'company_id' (Many2one to res.company): enables multi-company
     #   record rules.
     # -------------------------------------------------------------------------
-    active = fields.Boolean("Active", default=True)
+    active = fields.Boolean(string="Active", default=True)
 
     # -------------------------------------------------------------------------
     # Lifecycle Status (reserved field 'state')
@@ -174,13 +175,23 @@ class EstateProperty(models.Model):
         default="new",
     )
 
-    property_type_id = fields.Many2one("estate.property.type", string="Type")
-    property_tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    salesperson_id = fields.Many2one(
-        "res.users", string="Salesperson", default=lambda self: self.env.user
+    property_type_id = fields.Many2one(
+        comodel_name="estate.property.type", string="Type"
     )
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    property_tag_ids = fields.Many2many(
+        comodel_name="estate.property.tag", string="Tags"
+    )
+    salesperson_id = fields.Many2one(
+        comodel_name="res.users",
+        string="Salesperson",
+        default=lambda self: self.env.user,
+    )
+    buyer_id = fields.Many2one(comodel_name="res.partner", string="Buyer", copy=False)
+    offer_ids = fields.One2many(
+        comodel_name="estate.property.offer",
+        inverse_name="property_id",
+        string="Offers",
+    )
 
     total_area = fields.Float(compute="_total_area", default=0.0)
 

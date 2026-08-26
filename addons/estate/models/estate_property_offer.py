@@ -9,10 +9,13 @@ class EstatePropertyOffer(models.Model):
     _description = "Estate Property Offer"
     _order = "price desc"
 
-    _check_price = models.Constraint("CHECK(price > 0)", "Price must be positive.")
+    _check_price = models.Constraint(
+        definition="CHECK(price > 0)", message="Price must be positive."
+    )
 
     price = fields.Float(string="Price", required=True)
     status = fields.Selection(
+        string="Status",
         selection=[
             ("accepted", "Accepted"),
             ("refused", "Refused"),
@@ -20,10 +23,10 @@ class EstatePropertyOffer(models.Model):
         copy=False,
     )
 
-    buyer_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True)
+    buyer_id = fields.Many2one(comodel_name="res.partner", required=True)
+    property_id = fields.Many2one(comodel_name="estate.property", required=True)
 
-    validity = fields.Integer("Validity (days)", default=7)
+    validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(
         string="Deadline",
         compute="_compute_date_deadline",
@@ -31,7 +34,7 @@ class EstatePropertyOffer(models.Model):
     )
 
     property_type_id = fields.Many2one(
-        "estate.property.type",
+        comodel_name="estate.property.type",
         related="property_id.property_type_id",
         string="Property type",
         store=True,
