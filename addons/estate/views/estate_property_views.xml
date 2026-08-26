@@ -137,10 +137,22 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban>
+                <field name="state" />
                 <templates>
                     <t t-name="card">
                         <div>
-                            <field name="name" />
+                            <strong>
+                                <field name="name" />
+                            </strong>
+                            <p>Expected Price: <field name="expected_price" /></p>
+                            <t t-if="record.state.raw_value == 'offer_received'">
+                                <p>Best Offer: <field name="best_offer" /></p>
+                            </t>
+                            <t t-if="record.state.raw_value == 'offer_accepted'">
+                                <p>Selling Price: <field name="selling_price" /></p>
+                            </t>
+                            <field name="property_tag_ids" widget="many2many_tags"
+                                options="{'color_field': 'color', 'color_edit': 'true'}" />
                         </div>
                     </t>
                 </templates>
