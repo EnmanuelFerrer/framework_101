@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-  <record id="res_users_view_form_inherit_estate" model="ir.ui.view">
-    <field name="name">res.users.view.form.inherit.estate</field>
-    <field name="model">res.users</field>
-    <field name="inherit_id" ref="base.view_users_form" />
-    <field name="arch" type="xml">
+    <record id="res_users_view_form_inherit_estate" model="ir.ui.view">
+        <field name="name">res.users.view.form.inherit.estate</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="arch" type="xml">
 
-      <xpath expr="//notebook" position="inside">
+            <xpath expr="//notebook" position="inside">
 
-        <page string="Properties" name="estate_properties">
-          <field name="property_ids" readonly="1" />
-        </page>
+                <page string="Properties" name="estate_properties">
+                    <field name="property_ids" readonly="True" />
+                </page>
 
-      </xpath>
+            </xpath>
 
-    </field>
-  </record>
+        </field>
+    </record>
 
 </odoo>
