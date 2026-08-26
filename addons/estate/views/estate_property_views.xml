@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="estate_property_model_action" model="ir.actions.act_window">
         <field name="name">Estate Properties</field>
@@ -8,12 +8,12 @@
     </record>
 
     <record id="estate_property_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+        <field name="name">estate.property.view.tree</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list
                 string="Properties"
-                decoration-success="state == 'offer_accepted' or state == 'offer_received'"
+                decoration-success="state in ('offer_accepted', 'offer_received')"
                 decoration-bf="state == 'offer_accepted'"
                 decoration-muted="state == 'sold'"
             >
@@ -40,9 +40,9 @@
             <form>
                 <header>
                     <button name="action_set_state_sold" string="SOLD" type="object"
-                        invisible="state == 'sold' or state == 'cancelled'" />
+                        invisible="state in ('sold', 'cancelled')" />
                     <button name="action_set_state_cancelled" string="CANCEL" type="object"
-                        invisible="state == 'sold' or state == 'cancelled'" />
+                        invisible="state in ('sold', 'cancelled')" />
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
@@ -82,7 +82,7 @@
 
                         <page string="Offers">
                             <field name="offer_ids"
-                                readonly="state == 'offer_accepted' or state == 'sold' or state == 'cancelled'">
+                                readonly="state in ('offer_accepted', 'sold', 'cancelled')">
                                 <list
                                     decoration-success="status == 'accepted'"
                                     decoration-danger="status == 'refused'"
