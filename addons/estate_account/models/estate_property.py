@@ -1,15 +1,35 @@
-from odoo import models
+from odoo import Command, models
 
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_set_state_sold(self):
-        self.env["account.move"].create(
-            {
-                "partner_id": self.buyer_id.id,
-                "move_type": "out_invoice",
-            }
-        )
 
-        return super().action_set_state_sold()
+        res = super().action_set_state_sold()
+
+        for record in self:
+            self.env["account.move"].create(
+                {
+                    "partner_id": record.buyer_id.id,
+                    "move_type": "out_invoice",
+                    "line_ids": [
+                        Command.create(
+                            {
+                                "name": record.name,
+                                "quantity": 1,
+                                "price_unit": record.selling_price * 0.06,
+                            }
+                        ),
+                        Command.create(
+                            {
+                                "name": "Administrative fees",
+                                "quantity": 1,
+                                "price_unit": 100.00,
+                            }
+                        ),
+                    ],
+                }
+            )
+
+        return res
