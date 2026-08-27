@@ -48,63 +48,124 @@ output (e.g. line ~2000 of the fetched markdown). Do NOT read that boilerplate.
 
 ## Tutorial Progress (Server Framework 101)
 
-- [x] Chapter 1: Architecture Overview
+> **Audit:** 84 ejercicios verificados contra código fuente (2026-08-27).
+> 81 ✅ completados, 2 ⚠️ con desviaciones menores, 1 ❌ pendiente.
+> Ver `docs/AUDIT_REPORT.md` para el reporte completo.
+
+- [x] Chapter 1: Architecture Overview (teórico, sin ejercicios)
 - [x] Chapter 2: A New Application
+  - [x] Create estate module with `__init__.py` and `__manifest__.py`
+        (name + base dependency)
+  - [x] Make it an 'App' (`application: True`)
 - [x] Chapter 3: Models And Basic Fields
+  - [x] Create `estate.property` model with `_name` and `_description`
+  - [x] Add fields: name(Char,required), description(Text),
+        postcode(Char), date_availability(Date), expected_price(Float,
+        required), selling_price(Float), bedrooms(Integer),
+        living_area(Integer), facades(Integer), garage(Boolean),
+        garden(Boolean), garden_area(Integer),
+        garden_orientation(Selection: North/South/East/West)
 - [x] Chapter 4: Security - A Brief Introduction
+  - [x] Create `ir.model.access.csv` with CRUD permissions for
+        `base.group_user` on `estate.property`
 - [x] Chapter 5: Finally, Some UI To Play With
+  - [x] Add `ir.actions.act_window` for `estate.property`
+        (`view_mode="list,form"`)
+  - [x] Create 3-level menu hierarchy (Real Estate > Advertisements >
+        Properties)
+  - [x] Set `selling_price` readonly=True
+  - [x] Set `date_availability` copy=False, `selling_price` copy=False
+  - [x] Default `bedrooms=2`, default `date_availability` = today + 3m
+  - [x] Add `active` field with default=True
+  - [x] Add `state` field (Selection, 5 values, required, copy=False,
+        default='New')
 - [x] Chapter 6: Basic Views
+  - [x] Custom list view with appropriate fields
+  - [x] Custom form view (sheet, groups, notebook with pages)
+  - [x] Custom search view with field search shortcuts
+  - [x] "Available" filter (state in new/offer_received)
+  - [x] "Group By Postcode" (context-based)
 - [x] Chapter 7: Relations Between Models
+  - [x] `estate.property.type` model with `name` (Char, required)
+  - [x] `property_type_id` (Many2one) on property + in views
+  - [x] `buyer_id` (Many2one to `res.partner`, copy=False)
+  - [x] `salesperson_id` (Many2one to `res.users`, default=current user)
+  - [x] `estate.property.tag` model with `name` (Char, required)
+  - [x] `tag_ids` (Many2many) with `widget="many2many_tags"`
+  - [x] `estate.property.offer` model (price, status, partner_id,
+        property_id)
+  - [x] `offer_ids` (One2many inverse of `property_id`)
+  - [x] Access rights for all 3 new models
 - [x] Chapter 8: Computed Fields And Onchanges
+  - [x] `total_area` computed (`living_area + garden_area`) with
+        `@api.depends`
+  - [x] `best_offer` computed (max of offer prices) with `@api.depends`
+  - [x] `validity` (Integer, default=7) + `date_deadline` (Date,
+        computed + inverse) on offer
+  - [x] `date_deadline` = `create_date + validity` days, with inverse
+  - [x] `@api.onchange("garden")`: True → area=10/orientation='North';
+        False → clear
 - [x] Chapter 9: Ready For Some Action?
+  - [x] `action_sold` and `action_cancel` methods with UserError guards
+  - [x] `action_accept` and `action_refuse` methods on offer
+  - [x] Accept sets property buyer_id, selling_price, state to
+        offer_accepted
+  - [x] Only one accepted offer per property
+  - [x] Header buttons in form view
 - [x] Chapter 10: Constraints
+  - [x] SQL: `CHECK(expected_price > 0)`
+  - [x] SQL: `CHECK(selling_price > 0)`
+  - [x] SQL: `CHECK(price > 0)` on offer
+  - [x] SQL: `unique(name)` on type
+  - [x] SQL: `unique(name)` on tag
+  - [x] Python: `selling_price >= 90% expected_price` using
+        `float_compare`/`float_is_zero`
+  - [x] Skip check when `selling_price` is zero
 - [x] Chapter 11: Add The Sprinkles
-  - [x] Inline Views (`property_ids` One2many + inline list in type form)
-  - [x] Widgets (statusbar on state)
-  - [x] List Order (model `_order`: property id desc / offer price desc /
-        tag name / type sequence,name) + Manual ordering (sequence +
-        handle widget on type)
-  - [x] Attributes & Options (Form): `no_create` options on
-        `property_type_id`, tag `color` field + `color_field` option,
-        conditional header buttons, invisible garden fields, readonly
-        offer_ids by state
-  - [x] List — Editable lists (offer + tag `editable="bottom"`)
-  - [x] List — Optional field (`date_availability optional="hide"`)
-  - [x] List — Decorations: property list by state (green/green+bold/muted),
-        offer list (green accepted/red refused), hidden `status` column
-        (`column_invisible="1"`)
-  - [x] Search: default filter 'Available' via action context +
-        `filter_domain` (>=) on living_area
-  - [x] Stat Buttons: stored related `property_type_id` on offer,
-        `offer_ids` inverse + computed `offer_count` on type, stat
-        button (`type="action"`) with domain on active_id
+  - [x] Inline list view: `property_ids` on type form (name,
+        expected_price, state)
+  - [x] `statusbar` widget on `state` field
+  - [x] `_order` on all 4 models (property: id desc / offer: price desc
+        / tag: name / type: sequence,name)
+  - [x] Manual ordering: `sequence` field on type + `handle` widget
+  - [x] `no_create` option on `property_type_id`
+  - [x] `color` field on tag + `color_field` option on `many2many_tags`
+  - [x] Conditional `invisible` on Sold/Cancel header buttons
+  - [x] `garden_area`/`garden_orientation` `invisible="not garden"`
+  - [x] Accept/Refuse buttons `invisible="status"`
+  - [x] `offer_ids` `readonly` when property in
+        offer_accepted/sold/cancelled
+  - [x] Editable lists for offer and tag (`editable="bottom"`)
+  - [x] `date_availability` `optional="hide"`
+  - [x] List decorations: property (green/green+bold/muted), offer
+        (green accepted/red refused)
+  - [x] `status` column `column_invisible="1"` on offer list
+  - [x] Default search filter 'Available' via `search_default_available`
+  - [x] `filter_domain` on living_area (>= search)
+  - [x] Related stored `property_type_id` on offer
+  - [x] `offer_count` computed on type
+  - [x] Stat button on type form (`type="action"` + `active_id` domain)
 - [x] Chapter 12: Inheritance
-  - [x] Python Inheritance — CRUD methods:
-    - [x] Prevent deletion of property if state is not 'New' or 'Cancelled'
-          (`@api.ondelete`)
-    - [x] On offer creation: set property state to 'Offer Received' + raise
-          error if offer price < existing offer price (`create` override)
-  - [x] Model Inheritance — `res.users`:
-    - [x] Add `property_ids` (One2many) inverse of `salesperson_id` in
-          `estate.property`, with domain to only show available properties
-  - [x] View Inheritance — Users form:
-    - [x] Extend `base.view_users_form` with `property_ids` in a new
-          notebook page (`inherit_id` + xpath)
-- [ ] **Chapter 13: Interact With Other Modules — IN PROGRESS**
-  - [x] Link module: create `estate_account` (depends on `estate` + `account`)
-  - [x] Model inheritance: override `action_set_state_sold` on
-        `estate.property` from `estate_account` module (super call)
-  - [ ] Invoice creation: create `account.move` (Customer Invoice) when
-        property is sold (`partner_id` from buyer)
-  - [ ] Invoice lines: two lines — 6% of selling price + 100.00 admin
-        fees (use `Command.create` in `invoice_line_ids`)
+  - [x] `@api.ondelete`: block deletion if state not new/cancelled
+  - [x] `create` override with `@api.model_create_multi` on offer:
+        set state to offer_received + validate price
+  - [x] `res.users` inheritance with `property_ids` (One2many,
+        domain: state=new)
+  - [x] View inheritance on `base.view_users_form` with xpath
+        (notebook page)
+- [x] Chapter 13: Interact With Other Modules
+  - [x] `estate_account` link module (depends on `estate` + `account`)
+  - [x] Override `action_set_state_sold` with `super()` call
+  - [x] Create `account.move` (Customer Invoice) with `partner_id`
+        from buyer
+  - [x] Invoice lines: 6% of selling price + 100.00 admin fees using
+        `Command.create()`
 - [x] Chapter 14: A Brief History Of QWeb
-  - [x] Minimal kanban view: only `name` field, add `kanban` to
-        `view_mode`
-  - [x] Improved kanban: expected price, best price (if offer received),
-        selling price (if offer accepted), tags
-  - [x] Default grouping by property type + prevent drag and drop
-- [ ] Chapter 15: The final word
+  - [x] Minimal kanban view with `name` field, `kanban` in `view_mode`
+  - [x] Improved kanban: expected_price, best_price (conditional),
+        selling_price (conditional), tags
+  - [x] Default grouping by `property_type_id` + prevent drag
+- [ ] **Chapter 15: The final word — IN PROGRESS**
   - [ ] Refactor code to match Odoo coding guidelines (lint, naming,
         module structure, XML IDs)
   - [ ] Test on runbot (exploration only, no code)
