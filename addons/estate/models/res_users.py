@@ -8,5 +8,5 @@ class ResUsers(models.Model):
         comodel_name="estate.property",
         inverse_name="salesperson_id",
         string="Properties",
-        domain=[("state", "=", "new")]
+        domain=[("state", "=", "new")],
     )

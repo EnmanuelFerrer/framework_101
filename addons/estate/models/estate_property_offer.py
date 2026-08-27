@@ -114,4 +114,4 @@ class EstatePropertyOffer(models.Model):
                     )
 
                 property_record.state = "offer_received"
-        return super(EstatePropertyOffer, self).create(vals_list)
+        return super().create(vals_list)
