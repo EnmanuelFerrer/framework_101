@@ -305,7 +305,7 @@ ruff format addons/
 | `addons/estate/models/estate_property_type.py`        | Property type model                                                 |
 | `addons/estate/models/estate_property_tag.py`         | Property tag model                                                  |
 | `addons/estate/models/res_users.py`                   | `res.users` inheritance: adds `property_ids` (available properties) |
-| `addons/estate/views/estate_property_views.xml`       | List, form, search and kanban views for property                   |
+| `addons/estate/views/estate_property_views.xml`       | List, form, search and kanban views for property                    |
 | `addons/estate/views/estate_property_type_views.xml`  | Type CRUD views + stat button                                       |
 | `addons/estate/views/estate_property_tag_views.xml`   | Tag CRUD views                                                      |
 | `addons/estate/views/estate_property_offer_views.xml` | Offer list (stat button target)                                     |
