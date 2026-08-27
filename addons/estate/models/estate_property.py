@@ -217,15 +217,21 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_set_state_sold(self):
-        if self.state == "cancelled":
-            raise UserError("Cancelled properties can not be sold.")
-        self.state = "sold"
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("Cancelled properties can not be sold.")
+            if record.date_availability >= fields.Date.today():
+                raise UserError(
+                    f"The property is available to be sold from {record.date_availability}"  # noqa: E501
+                )
+            record.state = "sold"
         return True
 
     def action_set_state_cancelled(self):
-        if self.state == "sold":
-            raise UserError("Sold properties can not be cancelled.")
-        self.state = "cancelled"
+        for record in self:
+            if record.state == "sold":
+                raise UserError("Sold properties can not be cancelled.")
+            record.state = "cancelled"
         return True
 
     @api.constrains("selling_price", "expected_price")
