@@ -224,6 +224,10 @@ class EstateProperty(models.Model):
                 raise UserError(
                     f"The property is available to be sold from {record.date_availability}"  # noqa: E501
                 )
+            if not record.offer_ids.filtered(lambda offer: offer.status == "accepted"):
+                raise UserError(
+                    "An offer must be accepted to uptate the state to SOLD."
+                )
             record.state = "sold"
         return True
 
