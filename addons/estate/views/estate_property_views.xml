@@ -89,7 +89,7 @@
                                     editable="bottom"
                                 >
                                     <field name="price" />
-                                    <field name="buyer_id" />
+                                    <field name="buyer_id" readonly="True" />
                                     <field name="validity" />
                                     <field name="date_deadline" />
                                     <button name="action_set_status_accepted" type="object"
@@ -104,7 +104,7 @@
                         <page string="Other info">
                             <group>
                                 <field name="salesperson_id" />
-                                <field name="buyer_id" />
+                                <field name="buyer_id" readonly="True" />
                             </group>
                         </page>
                     </notebook>
