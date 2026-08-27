@@ -220,7 +220,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("Cancelled properties can not be sold.")
-            if record.date_availability >= fields.Date.today():
+            if record.date_availability <= fields.Date.today():
                 raise UserError(
                     f"The property is available to be sold from {record.date_availability}"  # noqa: E501
                 )
